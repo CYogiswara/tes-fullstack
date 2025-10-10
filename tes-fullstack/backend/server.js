@@ -23,20 +23,24 @@ app.get("/auctions", (req, res) => {
 });
 
 // Endpoint GET /login
-app.post("/login", (req, res)=> {
+app.post("/login", (req, res) => {
   const {username, password} = req.body
 
-  db.query("SELECT * FROM accounts WHERE username = ? AND password = ?", [username, password],(err, rows) => {
+  db.query("SELECT * FROM accounts WHERE username = ? AND password = ?", [username, password], (err, rows) => {
     if(err){
-      return res.status(500).json({ error: "Database error" });
+      return res.status(500).send("Database error") // KALO DATABASE BERMASALAH
     }
     if(rows.length === 0){
-      return res.status(401).json({error: "username atau password salah"})
-    }
-  })
+      return res.status(401).send("username or password is wrong") //KALO HASIL QUERY GA RETURN APAPUN (rows === 0)
+    } 
+
+    const user = rows[0]
+    return res.send("Login berhasil", user)
+  }
+  )
 })
 
-// Default route
+// Default Route / Error
 app.use((req, res) => {
   res.status(404).send("Not Found");
 });
