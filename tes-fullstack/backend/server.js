@@ -22,6 +22,20 @@ app.get("/auctions", (req, res) => {
   });
 });
 
+// Endpoint GET /login
+app.post("/login", (req, res)=> {
+  const {username, password} = req.body
+
+  db.query("SELECT * FROM accounts WHERE username = ? AND password = ?", [username, password],(err, rows) => {
+    if(err){
+      return res.status(500).json({ error: "Database error" });
+    }
+    if(rows.length === 0){
+      return res.status(401).json({error: "username atau password salah"})
+    }
+  })
+})
+
 // Default route
 app.use((req, res) => {
   res.status(404).send("Not Found");
