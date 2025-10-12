@@ -24,25 +24,33 @@ app.get("/auctions", (req, res) => {
 
 // Endpoint GET /login
 app.post("/login", (req, res) => {
-  const {username, password} = req.body
+  const { username, password } = req.body;
 
-  db.query("SELECT * FROM accounts WHERE username = ? AND password = ?", [username, password], (err, rows) => {
-    if(err){
-      return res.status(500).send("Database error") // KALO DATABASE BERMASALAH
+  const query = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+  db.query(query, [username, password], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: "Terjadi kesalahan server" });
     }
-    if(rows.length === 0){
-      return res.status(401).send("username or password is wrong") //KALO HASIL QUERY GA RETURN APAPUN (rows === 0)
-    } 
 
-    const user = rows[0]
-    return res.send("Login berhasil", user)
-  }
-  )
-})
+    if (rows.length === 0) {
+      return res.status(401).json({ error: "Username atau password salah" });
+    }
+
+    // login berhasil
+    const user = rows[0];
+    res.json({
+      message: "Login berhasil",
+      user: {
+        id: user.id,
+        username: user.username,
+      },
+    });
+  });
+});
 
 // Default Route / Error
 app.use((req, res) => {
-  res.status(404).send("Not Found");
+  res.status(404).json({message: "Not Found"});
 });
 
 app.listen(PORT, () => {
