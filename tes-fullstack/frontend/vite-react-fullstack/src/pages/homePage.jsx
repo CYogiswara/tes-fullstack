@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link , useNavigate} from "react-router-dom";
+import Navbar from "../components/navbar";
 
 function HomePage() {
   const [auctions, setAuctions] = useState([]);
@@ -21,28 +22,12 @@ function HomePage() {
       }
   }, [])
 
-  function handleLogout(){
-    localStorage.removeItem("user")
-    setUser(null)
-    navigate("/login")
-  }
 
   return (
     <>
-    {!user ? (<Link to="/login">
-      <button>Login</button>
-      </Link>) : 
-      (
-        <>
-        <button onClick={handleLogout}>Logout</button>
-        <h1>Halo, {user.username}</h1>
-        </>
-      )}
+    <Navbar user={user} setUser={setUser}></Navbar>
     <div style={{ padding: "20px" }}>
       <h1>Mobil yang bisa kamu lelang:</h1>
-
-      
-      
       <table border="1" cellPadding="8" style={{ marginTop: "20px" }}>
         <thead>
           <tr>
@@ -63,6 +48,7 @@ function HomePage() {
           ))}
         </tbody>
       </table>
+      
     </div>
     </>
   );
