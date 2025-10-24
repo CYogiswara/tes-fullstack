@@ -9,10 +9,14 @@ function CreatePage(){
     const [selectedBrands, setSelectedBrands] = useState("")
     const [selectedModel, setSelectedModel] = useState("")
     const [selectedTransmission, setSelectedTransmission] = useState("")
+    const [startingPrice, setStartingPrice] = useState("")
 
     const handleCreate = (e) => {
         e.preventDefault()
+        const carNameConcat = selectedBrands + " " + selectedModel
+        const carName = carNameConcat.toUpperCase()
 
+        
     }
 
     return(
@@ -40,10 +44,14 @@ function CreatePage(){
                     
                     <label>Transmission</label>
                     <select value={selectedTransmission} onChange={(e) => setSelectedTransmission(e.target.value)}>
+                        <option value="">Select transmission</option>
                         <option value="Automatic">Automatic</option>
                         <option value="Manual">Manual</option>
                         <option value="Sequential">Sequential</option>
                     </select>
+
+                    <label>Starting price</label>
+                    <input type="number" value={startingPrice} onChange={(e) => setStartingPrice(e.target.value)}></input>
                     <button type="submit">Auction Now</button>
                 </form>
             </div>
