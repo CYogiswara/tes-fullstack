@@ -11,12 +11,31 @@ function CreatePage(){
     const [selectedTransmission, setSelectedTransmission] = useState("")
     const [startingPrice, setStartingPrice] = useState("")
 
-    const handleCreate = (e) => {
+    const handleCreate = async (e) => {
         e.preventDefault()
+        let user = JSON.parse(localStorage.getItem("user"))
+        const username = user.username
         const carNameConcat = selectedBrands + " " + selectedModel
         const carName = carNameConcat.toUpperCase()
 
-        
+        try{
+            const res = await fetch("http://localhost:3000/create", {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username ,carName, transmission: selectedTransmission, startingPrice }),
+            })
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Login gagal");
+            }
+
+            navigate("/") 
+
+        }catch(err){
+            console.error(err)
+            alert("Error creating your auction")
+        }
     }
 
     return(

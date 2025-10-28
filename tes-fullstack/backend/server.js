@@ -48,6 +48,18 @@ app.post("/login", (req, res) => {
   });
 });
 
+// Endpoint POST /create
+app.post("/create", (req, res) => {
+  const {username ,carName, transmission, startingPrice} = req.body
+
+  const query = "INSERT INTO auctions (`owner`, `car`, `transmission`, `startingPrice`) VALUES (?, ?, ?, ?)"
+
+  db.query(query, [username, carName, transmission, startingPrice], (err, rows) => {
+      if(err) return res.json("error")
+        return res.json(rows)
+  })
+})
+
 // Default Route / Error
 app.use((req, res) => {
   res.status(404).json({message: "Not Found"});
