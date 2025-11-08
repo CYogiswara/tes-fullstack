@@ -24,7 +24,7 @@ function Navbar({user, setUser}){
         backgroundColor: "#000000ff",
       }}
     >
-      <h2>Car Auction</h2>
+      <h2>Libro Cafe</h2>
 
       <div style={{ display: "flex", gap: "10px" }}>
         {!user ? (
@@ -33,9 +33,6 @@ function Navbar({user, setUser}){
           </Link>
         ) : (
           <>
-            <Link to="/create">
-              <button>Sell a car</button>
-            </Link>
             <button onClick={handleLogout}>Logout</button>
             <span>Hi, {user.username}</span>
           </>

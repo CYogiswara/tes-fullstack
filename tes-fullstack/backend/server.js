@@ -11,9 +11,9 @@ const PORT = 3000;
 app.use(cors());              
 app.use(express.json());      
 
-// Endpoint GET /auctions
-app.get("/auctions", (req, res) => {
-  db.query("SELECT * FROM auctions", (err, rows) => {
+// Endpoint GET /menu
+app.get("/menu", (req, res) => {
+  db.query("SELECT * FROM menu_items", (err, rows) => {
     if (err) {
       console.error("DB Error:", err);
       return res.status(500).json({ error: "Database error" });

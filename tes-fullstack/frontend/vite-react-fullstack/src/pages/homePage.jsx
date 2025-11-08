@@ -3,16 +3,16 @@ import { Link , useNavigate} from "react-router-dom";
 import Navbar from "../components/navbar";
 
 function HomePage() {
-  const [auctions, setAuctions] = useState([]);
+  const [menus, setMenu] = useState([]);
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch("http://localhost:3000/auctions")
+    fetch("http://localhost:3000/menu")
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        setAuctions(data);
+        setMenu(data);
       })
       .catch(err => console.error("Fetch error:", err));
 
@@ -27,23 +27,15 @@ function HomePage() {
     <>
     <Navbar user={user} setUser={setUser}></Navbar>
     <div style={{ padding: "20px" }}>
-      <h1>Mobil yang bisa kamu lelang:</h1>
+      <h1>Menu Libro Cafe</h1>
       <table border="1" cellPadding="8" style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>Mobil</th>
-            <th>Pemilik</th>
-            <th>Harga Awal</th>
-            <th>Penawaran Tertinggi</th>
-          </tr>
-        </thead>
         <tbody>
-          {auctions.map(a => (
-            <tr key={a.id}>
-              <td>{a.car}</td>
-              <td>{a.owner}</td>
-              <td>{a.startingPrice}</td>
-              <td>{a.currentBid}</td>
+          {menus.map(menu => (
+            <tr key={menu.id}>
+              <td>{menu.nama_menu}</td>
+              <td>{menu.harga}</td>
+              <td>{menu.available}</td>
+              <td><button>Add to Cart</button></td>
             </tr>
           ))}
         </tbody>
