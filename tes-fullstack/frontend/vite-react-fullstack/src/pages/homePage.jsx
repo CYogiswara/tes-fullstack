@@ -9,7 +9,21 @@ function HomePage() {
 
   const navigate = useNavigate()
 
+  // Helper aman untuk parse JSON dari localStorage
+  function safeJSONParse(raw, fallback = null) {
+    if (raw === null || raw === undefined) return fallback;
+    if (typeof raw !== "string") return fallback;
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed === "undefined" || trimmed === "null") return fallback;
+    try {
+      return JSON.parse(trimmed);
+    } catch (err) {
+      console.error("Invalid data in localStorage:", err, raw);
+      return fallback;
+    }
+  }
 
+  //FETCH MENU
   useEffect(() => {
     fetch("http://localhost:3000/menu")
       .then(res => res.json())
@@ -19,30 +33,24 @@ function HomePage() {
       })
       .catch(err => console.error("Fetch error:", err));
 
-      const savedUser = localStorage.getItem("user")
-      const savedCart = localStorage.getItem("cart")
-      if(savedUser){
-        setUser(JSON.parse(savedUser))
+      const savedUserRaw = localStorage.getItem("user")
+      const savedCartRaw = localStorage.getItem("cart")
+      
+      const parsedUser = safeJSONParse(savedUserRaw, null)
+      if (parsedUser){
+        setUser(parsedUser)
       }
-
-      if(savedCart){
-        setCart(JSON.parse(savedCart))
-      }
+      const parsedCart = safeJSONParse(savedCartRaw, [])
+      setCart(Array.isArray(parsedCart) ? parsedCart : [])
   }, [])
 
   function addToCart(menu) {
-    //GET THE EXISTING CART FIRST:
-    const existingCart = JSON.parse(localStorage.getItem("cart")) || []
-    if (existingCart && existingCart !== "undefined" && existingCart !== "null") {
-      try {
-        setCart(JSON.parse(existingCart));
-      } catch (err) {
-        console.error("Invalid cart data:", err);
-        setCart([]);
-      }
-    }
+    // Ambil raw string lalu parse dengan aman
+    const raw = localStorage.getItem("cart")
+    const existing = safeJSONParse(raw, [])
+    const existingCart = Array.isArray(existing) ? existing : []
 
-    //FIND IF THE MENU CLICKED IS ALREADY IN CART:
+    // FIND IF THE MENU CLICKED IS ALREADY IN CART:
     const menuIsInCart = existingCart.find((item) => item.id_menu === menu.id_menu)
 
     //USE menuIsInCart:
@@ -59,7 +67,7 @@ function HomePage() {
 
     //ADD TO LOCALSTORAGE:
     localStorage.setItem("cart", JSON.stringify(existingCart))
-    setCart(existingCart)
+    setCart([...existingCart]) // clone agar state berubah
 
     alert(`${menu.nama_menu} added to cart`)
   }
