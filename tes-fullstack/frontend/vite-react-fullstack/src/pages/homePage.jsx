@@ -34,7 +34,7 @@ function HomePage() {
       .catch(err => console.error("Fetch error:", err));
 
       const savedUserRaw = localStorage.getItem("user")
-      const savedCartRaw = localStorage.getItem("cart")
+      const savedCartRaw = sessionStorage.getItem("cart")
       
       const parsedUser = safeJSONParse(savedUserRaw, null)
       if (parsedUser){
@@ -46,7 +46,7 @@ function HomePage() {
 
   function addToCart(menu) {
     // Ambil raw string lalu parse dengan aman
-    const raw = localStorage.getItem("cart")
+    const raw = sessionStorage.getItem("cart")
     const existing = safeJSONParse(raw, [])
     const existingCart = Array.isArray(existing) ? existing : []
 
@@ -65,8 +65,8 @@ function HomePage() {
       })
     }
 
-    //ADD TO LOCALSTORAGE:
-    localStorage.setItem("cart", JSON.stringify(existingCart))
+    //ADD TO SESSIONSTORAGE:
+    sessionStorage.setItem("cart", JSON.stringify(existingCart))
     setCart([...existingCart]) // clone agar state berubah
 
     alert(`${menu.nama_menu} added to cart`)
@@ -78,6 +78,9 @@ function HomePage() {
     <Navbar user={user} setUser={setUser}></Navbar>
     <div style={{ padding: "20px" }}>
       <h1>Menu Libro Cafe</h1>
+      <Link to="/cart">
+        <button>View Cart</button>
+      </Link>
       <table border="1" cellPadding="8" style={{ marginTop: "20px" }}>
         <tbody>
           {menus.map(menu => (
@@ -90,7 +93,6 @@ function HomePage() {
           ))}
         </tbody>
       </table>
-      
     </div>
     </>
   );
