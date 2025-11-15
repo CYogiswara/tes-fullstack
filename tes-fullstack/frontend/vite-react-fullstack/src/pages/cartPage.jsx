@@ -55,8 +55,9 @@ function CartPage(){
                         </tbody>
                     </table>
                 )}
-                <h3>Total Pesanan: {total}</h3>
-                <button>Checkout</button>
+                <button>🗑️ Empty Cart</button>
+                <h3>Total Pesanan: Rp. {total}</h3>
+                <button>🛒 Order</button>
             </div>
         </>
     )

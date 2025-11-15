@@ -79,7 +79,7 @@ function HomePage() {
     <div style={{ padding: "20px" }}>
       <h1>Menu Libro Cafe</h1>
       <Link to="/cart">
-        <button>View Cart</button>
+        <button>🛒 View Cart</button>
       </Link>
       <table border="1" cellPadding="8" style={{ marginTop: "20px" }}>
         <tbody>
