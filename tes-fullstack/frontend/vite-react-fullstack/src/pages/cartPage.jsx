@@ -18,6 +18,38 @@ function CartPage(){
         }
     }
 
+    // Function for Ordering
+    async function handleOrder(){
+        try{
+        const userRaw = localStorage.getItem("user")
+        const user = JSON.parse(userRaw) 
+
+        const id_accounts = user.id_accounts
+
+        const response = await fetch("http://localhost:3000/order", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                cart: cart,
+                id_accounts: id_accounts,
+                total: total
+            })
+        })
+        const data = await response.json()
+
+        if(response.ok){
+            alert("Order successful")
+            sessionStorage.removeItem("cart")
+            setCart([])
+        }else{
+            alert("Order failed")
+        }
+    }catch(err){
+        console.error("fetch error", err)
+        alert("Order gagal (fetch error)")
+    }
+    }
+
     useEffect(() => {
         const cartInfoRaw = sessionStorage.getItem("cart")
         const parsedCartInfo = safeJSONParse(cartInfoRaw, [])
@@ -57,7 +89,7 @@ function CartPage(){
                 )}
                 <button>🗑️ Empty Cart</button>
                 <h3>Total Pesanan: Rp. {total}</h3>
-                <button>🛒 Order</button>
+                <button onClick={handleOrder}>🛒 Order</button>
             </div>
         </>
     )
