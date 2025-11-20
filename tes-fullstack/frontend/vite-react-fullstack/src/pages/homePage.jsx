@@ -72,6 +72,14 @@ function HomePage() {
     alert(`${menu.nama_menu} added to cart`)
   }
 
+  function availableStatus(status){
+    if(status === 1){
+      return "Available"
+    }else{
+      return "Not available"
+    }
+  }
+
 
   return (
     <>
@@ -81,13 +89,16 @@ function HomePage() {
       <Link to="/cart">
         <button>🛒 View Cart</button>
       </Link>
+      <Link to="/orders">
+        <button>Ke orders, experimental</button>
+      </Link>
       <table border="1" cellPadding="8" style={{ marginTop: "20px" }}>
         <tbody>
           {menus.map(menu => (
             <tr key={menu.id_menu}>
               <td>{menu.nama_menu}</td>
               <td>{menu.harga}</td>
-              <td>{menu.available}</td>
+              <td>{availableStatus(menu.available)}</td>
               <td><button onClick={() => addToCart(menu)}>Add to Cart</button></td>
             </tr>
           ))}

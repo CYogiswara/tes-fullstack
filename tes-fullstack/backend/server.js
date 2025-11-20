@@ -21,6 +21,17 @@ app.get("/menu", async (req, res) => {
   }
 });
 
+//Endpoint GET /orders
+app.get("/orders", async (req, res) => {
+  try{
+    const [orderRows] = await db.query("SELECT * FROM orders")
+    res.json(orderRows)
+  }catch(err){
+    console.error("DB Error:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+})
+
 // Endpoint POST /order
 app.post("/order", async (req, res) => {
   const {cart, id_accounts, total} = req.body
